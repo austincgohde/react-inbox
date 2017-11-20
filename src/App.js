@@ -141,7 +141,10 @@ class App extends Component {
     let toolbarSelectedCount =
           toolbarFilterCheck.length === messages.length ? 3
         : toolbarFilterCheck.length === 0 ? 1
-        : 2
+        : 2;
+
+    let unreadNum = messages.filter(m => m.read === false).length;
+    let unreadStr = unreadNum === 1 ? "unread message" : "unread messages";
 
     return (
       <div>
@@ -153,6 +156,8 @@ class App extends Component {
           bulkDeleteFn={this.handleBulkMsgDel}
           bulkLabelAddFn={this.handleLabelsAdd}
           bulkLabelRemoveFn={this.handleLabelsRemove}
+          unreadNum={unreadNum}
+          unreadStr={unreadStr}
           />
         <MessageList
           messages={this.state.messages}

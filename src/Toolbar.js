@@ -47,8 +47,8 @@ class Toolbar extends Component {
       <div className="row toolbar">
         <div className="col-md-12">
           <p className="pull-right">
-            <span className="badge badge">2</span>
-            unread messages
+            <span className="badge badge">{this.props.unreadNum}</span>
+            {this.props.unreadStr}
           </p>
 
           <button
