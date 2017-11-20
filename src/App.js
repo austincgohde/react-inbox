@@ -84,6 +84,26 @@ class App extends Component {
     this.setState({messages: messageList});
   }
 
+  handleRMarking = () => {
+    let messageList = this.state.messages.map((m) => {
+      m.read = m.selected === true ? true : m.read;
+      m.selected = false;
+      return m
+    });
+    console.log(messageList);;
+    this.setState({messages: messageList});
+  }
+
+  handleURMarking = () => {
+    let messageList = this.state.messages.map((m) => {
+      m.read = m.selected === true ? false : m.read;
+      m.selected = false;
+      return m
+    });
+    console.log(messageList);;
+    this.setState({messages: messageList});
+  }
+
   render() {
 
     let {
@@ -101,6 +121,8 @@ class App extends Component {
         <Toolbar
           selectedCount={toolbarSelectedCount}
           bulkSelectFn={this.handleBulkSelecting}
+          bulkReadFn={this.handleRMarking}
+          bulkUnreadFn={this.handleURMarking}
           />
         <MessageList
           messages={this.state.messages}

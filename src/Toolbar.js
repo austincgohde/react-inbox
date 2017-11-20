@@ -9,6 +9,18 @@ class Toolbar extends Component {
     this.props.bulkSelectFn(this.props.selectedCount);
   }
 
+  handleMassRead = (e) => {
+    console.log("Does this even work?");
+    e.preventDefault();
+    this.props.bulkReadFn();
+  }
+
+  handleMassUnread = (e) => {
+    console.log("Does this even work?");
+    e.preventDefault();
+    this.props.bulkUnreadFn();
+  }
+
   render () {
     console.log(this.props.selectedCount);
     let selectedCheck =
@@ -33,11 +45,19 @@ class Toolbar extends Component {
             <i className={selectedCheck}></i>
           </button>
 
-          <button className="btn btn-default" disabled={buttonDisable}>
+          <button
+            className="btn btn-default"
+            disabled={buttonDisable}
+            onClick={this.handleMassRead}
+            >
             Mark As Read
           </button>
 
-          <button className="btn btn-default" disabled={buttonDisable}>
+          <button
+            className="btn btn-default"
+            disabled={buttonDisable}
+            onClick={this.handleMassUnread}
+            >
             Mark As Unread
           </button>
 
