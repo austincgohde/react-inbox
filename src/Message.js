@@ -1,11 +1,7 @@
 import React, {Component} from 'react'
 
 class Message extends Component {
-
-  state = {
-    selected : this.props.message.selected
-  }
-
+  
   handleStarred = (e) => {
     e.preventDefault();
     this.props.valueChangeFn(this.props.message, "starred", !this.props.message.starred)
@@ -14,8 +10,7 @@ class Message extends Component {
   handleSelected = (e) => {
     // e.preventDefault();
     let valueFixer = e.target.value !== "on" ? true : false;
-    this.setState({selected : valueFixer})
-    this.props.valueChangeFn(this.props.message, "selected", this.state.selected)
+    this.props.valueChangeFn(this.props.message, "selected", valueFixer)
   }
 
   render() {
@@ -23,14 +18,15 @@ class Message extends Component {
     let {
       read,
       starred,
+      selected,
       labels,
       subject
     } = this.props.message
 
     let ifRead = read ? "read" : "unread";
     let ifStarred = starred ? "star fa fa-star" : "star fa fa-star-o";
-    let ifSelected = this.state.selected ? "selected" : "";
-    let booleanConverter = this.state.selected ? "on" : "off"
+    let ifSelected = selected ? "selected" : "";
+    let booleanConverter = selected ? "on" : "off"
     let labelsMapped = labels.map((label, i) => {
       return <span key={i} className="label label-warning">{label}</span>
     })
@@ -43,7 +39,7 @@ class Message extends Component {
             <input
               type="checkbox"
               value={booleanConverter}
-              checked={this.state.selected}
+              checked={selected}
               onChange={this.handleSelected}
               />
           </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import Toolbar from './Toolbar';
+import Toolbar from './Toolbar';
 import MessageList from './MessageList';
 
 class App extends Component {
@@ -18,7 +18,6 @@ class App extends Component {
         "subject": "connecting the system won't do anything, we need to input the mobile AI panel!",
         "read": false,
         "starred": false,
-        "selected": true,
         "labels": []
       },
       {
@@ -33,7 +32,6 @@ class App extends Component {
         "subject": "We need to program the primary TCP hard drive!",
         "read": true,
         "starred": false,
-        "selected": true,
         "labels": []
       },
       {
@@ -77,10 +75,33 @@ class App extends Component {
     this.setState({ messages: messageList});
   }
 
+  handleBulkSelecting = (count) => {
+    console.log("Did I get here?");
+    let countCheck = count === 3 ? false : true;
+    let messageList = this.state.messages.map(m => m = {...m, "selected": countCheck});
+
+    console.log(messageList);
+    this.setState({messages: messageList});
+  }
+
   render() {
+
+    let {
+      messages
+    } = this.state
+
+    let toolbarFilterCheck = messages.filter(m => m.selected);
+    let toolbarSelectedCount =
+          toolbarFilterCheck.length === messages.length ? 3
+        : toolbarFilterCheck.length === 0 ? 1
+        : 2
+
     return (
       <div>
-
+        <Toolbar
+          selectedCount={toolbarSelectedCount}
+          bulkSelectFn={this.handleBulkSelecting}
+          />
         <MessageList
           messages={this.state.messages}
           valueChangeFn={this.handleValueChanges}
