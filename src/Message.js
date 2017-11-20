@@ -2,6 +2,11 @@ import React, {Component} from 'react'
 
 class Message extends Component {
 
+  handleStarred = (e) => {
+    e.preventDefault();
+    this.props.valueChangeFn(this.props.message, "starred", !this.props.message.starred)
+  }
+
   render() {
 
     let {
@@ -33,6 +38,7 @@ class Message extends Component {
             <i
               id={this.props.message.id}
               className={ifStarred}
+              onClick={this.handleStarred}
               ></i>
           </div>
         </div>

@@ -68,10 +68,10 @@ class App extends Component {
 
   }
 
-  handleValueChanges = (message, value, newValue) => {
-    let messageList = this.props.message.filter(m => m.id !== message.id);
+  handleValueChanges = (message, property, newValue) => {
+    let messageList = this.state.messages.filter(m => m.id !== message.id);
     let changedMsg = Object.assign({}, message);
-    changedMsg[value] = newValue;
+    changedMsg[property] = newValue;
     messageList = messageList.concat(changedMsg);
     messageList.sort((a, b) => a.id - b.id);
     this.setState({ messages: messageList});
