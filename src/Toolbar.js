@@ -26,6 +26,14 @@ class Toolbar extends Component {
     this.props.bulkDeleteFn();
   }
 
+  handleMassLabelAdd = (e) => {
+    this.props.bulkLabelAddFn(e.target.value);
+  }
+
+  handleMassLabelRemove = (e) => {
+    this.props.bulkLabelRemoveFn(e.target.value);
+  }
+
   render () {
     console.log(this.props.selectedCount);
     let selectedCheck =
@@ -66,14 +74,22 @@ class Toolbar extends Component {
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled={buttonDisable}>
+          <select
+            className="form-control label-select"
+            disabled={buttonDisable}
+            onChange={this.handleMassLabelAdd}
+            >
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select className="form-control label-select" disabled={buttonDisable}>
+          <select
+            className="form-control label-select"
+            disabled={buttonDisable}
+            onChange={this.handleMassLabelRemove}
+            >
             <option>Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>

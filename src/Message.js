@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 
 class Message extends Component {
-  
+
   handleStarred = (e) => {
     e.preventDefault();
     this.props.valueChangeFn(this.props.message, "starred", !this.props.message.starred)
   }
 
   handleSelected = (e) => {
-    // e.preventDefault();
     let valueFixer = e.target.value !== "on" ? true : false;
     this.props.valueChangeFn(this.props.message, "selected", valueFixer)
   }

@@ -104,8 +104,30 @@ class App extends Component {
     this.setState({messages: messageList});
   }
 
-  bulkMsgDel = () => {
+  handleBulkMsgDel = () => {
     let messageList = this.state.messages.filter(m => m.selected !== true);
+    this.setState({messages: messageList})
+  }
+
+  handleLabelsAdd = (label) => {
+    let messageList = this.state.messages.map((m) => {
+      if(m.selected === true) {
+        let labelsArr = [label].concat(m.labels.filter(l => l !== label))
+        m.labels = labelsArr.sort();
+      }
+      return m
+    })
+    this.setState({messages: messageList})
+  }
+
+  handleLabelsRemove = (label) => {
+    let messageList = this.state.messages.map((m) => {
+      if(m.selected === true) {
+        let labelsArr = m.labels.filter(l => l !== label)
+        m.labels = labelsArr.sort();
+      }
+      return m
+    })
     this.setState({messages: messageList})
   }
 
@@ -128,7 +150,9 @@ class App extends Component {
           bulkSelectFn={this.handleBulkSelecting}
           bulkReadFn={this.handleRMarking}
           bulkUnreadFn={this.handleURMarking}
-          bulkDeleteFn={this.bulkMsgDel}
+          bulkDeleteFn={this.handleBulkMsgDel}
+          bulkLabelAddFn={this.handleLabelsAdd}
+          bulkLabelRemoveFn={this.handleLabelsRemove}
           />
         <MessageList
           messages={this.state.messages}
