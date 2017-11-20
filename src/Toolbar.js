@@ -21,6 +21,11 @@ class Toolbar extends Component {
     this.props.bulkUnreadFn();
   }
 
+  handleMassDelete = (e) => {
+    e.preventDefault();
+    this.props.bulkDeleteFn();
+  }
+
   render () {
     console.log(this.props.selectedCount);
     let selectedCheck =
@@ -75,7 +80,11 @@ class Toolbar extends Component {
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default" disabled={buttonDisable}>
+          <button
+            className="btn btn-default"
+            disabled={buttonDisable}
+            onClick={this.handleMassDelete}
+            >
             <i className="fa fa-trash-o"></i>
           </button>
         </div>

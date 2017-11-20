@@ -104,6 +104,11 @@ class App extends Component {
     this.setState({messages: messageList});
   }
 
+  bulkMsgDel = () => {
+    let messageList = this.state.messages.filter(m => m.selected !== true);
+    this.setState({messages: messageList})
+  }
+
   render() {
 
     let {
@@ -123,6 +128,7 @@ class App extends Component {
           bulkSelectFn={this.handleBulkSelecting}
           bulkReadFn={this.handleRMarking}
           bulkUnreadFn={this.handleURMarking}
+          bulkDeleteFn={this.bulkMsgDel}
           />
         <MessageList
           messages={this.state.messages}
