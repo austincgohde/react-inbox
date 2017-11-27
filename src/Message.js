@@ -26,7 +26,7 @@ class Message extends Component {
     let ifStarred = starred ? "star fa fa-star" : "star fa fa-star-o";
     let ifSelected = selected ? "selected" : "";
     let booleanConverter = selected ? "on" : "off"
-    let labelsMapped = labels.map((label, i) => {
+      let labelsMapped = labels.map((label, i) => {
       return <span key={i} className="label label-warning">{label}</span>
     })
 

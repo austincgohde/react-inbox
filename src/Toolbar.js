@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Toolbar extends Component {
 
@@ -34,14 +34,20 @@ class Toolbar extends Component {
     this.props.bulkLabelRemoveFn(e.target.value);
   }
 
+  handleFormToggle = (e) => {
+    this.props.toggleComposeForm();
+  }
+
   render () {
-    console.log(this.props.selectedCount);
+
     let selectedCheck =
           this.props.selectedCount === 3 ? "fa fa-check-square-o"
         : this.props.selectedCount === 1 ? "fa fa-square-o"
         : "fa fa-minus-square-o";
 
     let buttonDisable = this.props.selectedCount === 1 ? "disabled" : "";
+
+    let toggleSwitcher = !this.props.formToggle ? "plus" : "minus";
 
     return (
       <div className="row toolbar">
@@ -50,6 +56,13 @@ class Toolbar extends Component {
             <span className="badge badge">{this.props.unreadNum}</span>
             {this.props.unreadStr}
           </p>
+
+          <a className="btn btn-danger">
+            <i
+              className={`fa fa-${toggleSwitcher}`}
+              onClick={this.handleFormToggle}
+              ></i>
+          </a>
 
           <button
             className="btn btn-default"

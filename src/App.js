@@ -1,78 +1,43 @@
 import React, { Component } from 'react';
 import Toolbar from './Toolbar';
+import Compose from './Compose';
 import MessageList from './MessageList';
+import axios from 'axios';
 
 class App extends Component {
 
   state = {
-    messages: [
-      {
-        "id": 1,
-        "subject": "You can't input the protocol without calculating the mobile RSS protocol!",
-        "read": false,
-        "starred": true,
-        "labels": ["dev", "personal"]
-      },
-      {
-        "id": 2,
-        "subject": "connecting the system won't do anything, we need to input the mobile AI panel!",
-        "read": false,
-        "starred": false,
-        "labels": []
-      },
-      {
-        "id": 3,
-        "subject": "Use the 1080p HTTP feed, then you can parse the cross-platform hard drive!",
-        "read": false,
-        "starred": true,
-        "labels": ["dev"]
-      },
-      {
-        "id": 4,
-        "subject": "We need to program the primary TCP hard drive!",
-        "read": true,
-        "starred": false,
-        "labels": []
-      },
-      {
-        "id": 5,
-        "subject": "If we override the interface, we can get to the HTTP feed through the virtual EXE interface!",
-        "read": false,
-        "starred": false,
-        "labels": ["personal"]
-      },
-      {
-        "id": 6,
-        "subject": "We need to back up the wireless GB driver!",
-        "read": true,
-        "starred": true,
-        "labels": []
-      },
-      {
-        "id": 7,
-        "subject": "We need to index the mobile PCI bus!",
-        "read": true,
-        "starred": false,
-        "labels": ["dev", "personal"]
-      },
-      {
-        "id": 8,
-        "subject": "If we connect the sensor, we can get to the HDD port through the redundant IB firewall!",
-        "read": true,
-        "starred": true,
-        "labels": []
-      }
-    ]
+
+    messages: [],
+    formToggle : false
 
   }
 
-  handleValueChanges = (message, property, newValue) => {
-    let messageList = this.state.messages.filter(m => m.id !== message.id);
+  updateMessage = async (msg) => {
+    msg.labels = JSON.stringify(msg.labels);
+    let updatedMsg = await axios.patch(`http://localhost:8000/messages/${msg.id}`, msg)
+    let message = updatedMsg.data;
+    return message
+  }
+
+  componentDidMount = () => {
+    axios.get('http://localhost:8000/messages')
+      .then((messages) => {
+        messages = messages.data.map((msg) => {
+          msg.selected = false;
+          return msg
+        })
+        messages.sort((a, b) => a.id -b.id)
+        this.setState({messages})
+      })
+  }
+
+  handleValueChanges =  async(message, property, newValue) => {
     let changedMsg = Object.assign({}, message);
     changedMsg[property] = newValue;
-    messageList = messageList.concat(changedMsg);
-    messageList.sort((a, b) => a.id - b.id);
-    this.setState({ messages: messageList});
+    let changedMsgList = await this.updateMessage(changedMsg);
+    changedMsgList.sort((a, b) => a.id - b.id);
+    this.setState({ messages: changedMsgList});
   }
 
   handleBulkSelecting = (count) => {
@@ -131,6 +96,21 @@ class App extends Component {
     this.setState({messages: messageList})
   }
 
+  toggleComposeForm = (e) => {
+    this.setState({ formToggle: !this.state.formToggle})
+  }
+
+  submitComposeForm = (msg) => {
+    msg.labels = JSON.stringify([]);
+    axios.post('http://localhost:8000/messages', msg)
+      .then((messages) => {
+        this.setState({
+            messages: messages.data,
+            formToggle: !this.state.formToggle
+        })
+      })
+  }
+
   render() {
 
     let {
@@ -146,6 +126,8 @@ class App extends Component {
     let unreadNum = messages.filter(m => m.read === false).length;
     let unreadStr = unreadNum === 1 ? "unread message" : "unread messages";
 
+    let showCompose = this.state.formToggle ? <Compose submitCompose={this.submitComposeForm}/> : null;
+
     return (
       <div>
         <Toolbar
@@ -158,7 +140,10 @@ class App extends Component {
           bulkLabelRemoveFn={this.handleLabelsRemove}
           unreadNum={unreadNum}
           unreadStr={unreadStr}
+          formToggle={this.state.formToggle}
+          toggleComposeForm={this.toggleComposeForm}
           />
+        {showCompose}
         <MessageList
           messages={this.state.messages}
           valueChangeFn={this.handleValueChanges}
